@@ -2,7 +2,34 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--color-bg, #ffffff);
+  color: var(--color-text, #213547);
   transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.app-header {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.app-main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.theme-toggle {
+  background: var(--color-card, #ffffff);
+  border: 1px solid var(--color-border, #e5e7eb);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 1.25rem;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.theme-toggle:hover {
+  background: var(--color-bg, #ffffff);
 }

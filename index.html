@@ -1,28 +1,17 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>React Vite Starter</title>
     <script>
-      // Inline FOUC-prevention script: synchronously apply theme before first paint
       (function () {
-        var STORAGE_KEY = 'theme-preference';
-        var theme = 'light';
-        try {
-          var stored = localStorage.getItem(STORAGE_KEY);
-          if (stored === 'light' || stored === 'dark') {
-            theme = stored;
-          } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            theme = 'dark';
-          }
-        } catch (e) {
-          // localStorage unavailable — fall back to system or default
-          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            theme = 'dark';
-          }
-        }
-        document.documentElement.classList.add(theme);
+        var theme =
+          localStorage.getItem('theme') ||
+          localStorage.getItem('theme-preference') ||
+          (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+        document.documentElement.setAttribute('data-theme', theme);
       })();
     </script>
   </head>
