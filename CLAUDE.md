@@ -1,64 +1,76 @@
 # CLAUDE.md
 
-## Project Overview
+## Development Commands
 
-This is a React front-end project with a complete dark mode theming system.
-
-## Tech Stack
-
-- React (with JSX)
-- CSS Custom Properties (Design Tokens) for theming
-- Vite (entry: `src/main.jsx`)
+```bash
+npm run dev      # Start development server
+npm run build    # Production build
+npm run preview  # Preview production build
+```
 
 ## Project Structure
 
 ```
-index.html              # HTML entry, includes inline script to prevent FOUC
 src/
-  main.jsx              # App entry point, imports index.css
-  App.jsx               # Root component, integrates Header and useTheme
-  App.css
-  index.css             # Global CSS custom properties (design tokens) for light/dark themes
-  hooks/
-    useTheme.js          # Theme management hook
-  components/
-    Header.jsx + .css    # Sticky header with title and theme toggle
-    ThemeToggle.jsx + .css  # 🌙/☀️ icon button for theme switching
+  pages/
+    Home.tsx
+    Home.module.css
+  types/          # Type declarations for untyped libraries
+  index.css       # Global styles
 ```
 
-## Theming System
+## Tech Stack
 
-### How It Works
+- React + TypeScript
+- react-router-dom
+- CSS Modules
+- TypeScript migration in progress — all new files must use `.tsx`
 
-- Theme is controlled by toggling `light` / `dark` class on the `<html>` element.
-- CSS custom properties defined in `src/index.css` (`:root`/`html.light` for light, `html.dark` for dark) drive all colors globally.
-- Color contrast meets WCAG AA standard (≥ 4.5:1).
+## Routing Rules
 
-### Theme Initialization Priority
+- Use `useNavigate` hook or `<Link>` component for navigation
+- **Do NOT use `window.location.href`** for internal navigation
 
-1. `localStorage` key: `theme-preference`
-2. System `prefers-color-scheme`
-3. Default: `light`
+```tsx
+// ✅ Correct
+import { useNavigate, Link } from 'react-router-dom';
+const navigate = useNavigate();
+navigate('/path');
+<Link to="/path">Click</Link>
 
-### FOUC Prevention
+// ❌ Wrong
+window.location.href = '/path';
+```
 
-`index.html` contains a synchronous inline `<script>` in `<head>` that reads localStorage / system preference and sets the `<html>` class **before first render**.
+## Style Rules
 
-### `useTheme` Hook (`src/hooks/useTheme.js`)
+- Use CSS Modules for component styles (`.module.css`)
+- Global styles go in `index.css`
+- CSS Modules class names: camelCase
+- Font-family declaration must use the following stack:
 
-- Manages theme state with the priority above.
-- Persists to `localStorage` (with graceful degradation if storage is disabled).
-- Follows system theme changes in real time when user has not manually set a preference.
-- Syncs across multiple tabs via `storage` event listener.
+```css
+font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
+  'Noto Sans', sans-serif, 'Apple Color Emoji', 'Segoe UI Emoji', 'Segoe UI Symbol',
+  'Noto Color Emoji';
+```
 
-### ThemeToggle Component
+## Animation Rules
 
-- Displays 🌙 (dark) / ☀️ (light) icon.
-- `aria-label` updates with current state for accessibility.
-- Supports keyboard activation (Enter / Space).
+- Use `will-change` only on elements that are actively animating; remove after animation completes
+- Use `animationend` event to clean up animation classes/properties
+- Exception: `:hover` transitions do not require `will-change` cleanup
 
-### Key Conventions
+## Accessibility Rules
 
-- localStorage key: `theme-preference`
-- Theme switch response time: < 100ms
-- All theme-dependent styling must use CSS custom properties from `src/index.css`.
+- Do NOT use `<a role="button">` — use `<button>` instead
+- Do NOT add duplicate `aria-label` attributes on the same element
+- All interactive elements must be keyboard accessible (`Tab`, `Enter`, `Space`)
+
+## TypeScript Rules
+
+- All new files must use `.tsx` extension
+- **Prohibit `any`** — use proper types or `unknown`
+- **Prohibit `@ts-ignore`** — fix the underlying type issue instead
+- Use `interface` (not `type`) for component props
+- Place type declarations for untyped third-party libraries in `src/types/`
