@@ -1,26 +1,20 @@
-import { useState } from 'react'
-import { Clock } from './components/Clock'
-import './App.css'
+import React from 'react';
+import Header from './components/Header.jsx';
+import { useTheme } from './hooks/useTheme.js';
+import './App.css';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const { theme, toggleTheme } = useTheme();
 
   return (
     <div className="app">
-      <header className="app-header">
-        <h1>React + Vite Starter 🚀</h1>
-        <p>欢迎使用 React + Vite 模板项目</p>
-      </header>
+      <Header theme={theme} onToggleTheme={toggleTheme} />
       <main className="app-main">
-        <Clock hourCycle="h24" showSeconds={true} showDate={true} />
+        <h2>Welcome to React Vite Starter</h2>
+        <p>Click the theme toggle button in the header to switch between light and dark mode.</p>
       </main>
-      <div className="card">
-        <button onClick={() => setCount(c => c + 1)}>
-          点击次数：{count}
-        </button>
-      </div>
     </div>
-  )
+  );
 }
 
-export default App
+export default App;
