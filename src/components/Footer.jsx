@@ -1,12 +1,10 @@
-import './Footer.css';
+const CURRENT_YEAR = new Date().getFullYear();
 
 function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="footer" role="contentinfo">
+    <footer className="footer">
       <p className="footer__text">
-        &copy; {currentYear} React Vite Starter. All rights reserved.
+        &copy; {CURRENT_YEAR} React Vite Starter. All rights reserved.
       </p>
     </footer>
   );
