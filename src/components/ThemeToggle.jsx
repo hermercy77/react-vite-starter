@@ -1,20 +1,26 @@
 import './ThemeToggle.css';
 
-export function ThemeToggle({ resolved, onToggle }) {
-  const isDark = resolved === 'dark';
-  const icon = isDark ? '☀️' : '🌙';
-  const ariaLabel = isDark ? '切换到浅色模式' : '切换到深色模式';
+/**
+ * A button that toggles between light and dark themes.
+ *
+ * Props:
+ *  - resolvedTheme: 'light' | 'dark'
+ *  - onToggle: () => void
+ */
+export function ThemeToggle({ resolvedTheme, onToggle }) {
+  const isDark = resolvedTheme === 'dark';
+  const label = isDark ? 'Switch to light mode' : 'Switch to dark mode';
 
   return (
     <button
-      className="theme-toggle"
       type="button"
+      className="theme-toggle"
       onClick={onToggle}
-      aria-label={ariaLabel}
-      title={ariaLabel}
+      aria-label={label}
+      title={label}
     >
       <span className="theme-toggle__icon" aria-hidden="true">
-        {icon}
+        {isDark ? '☀️' : '🌙'}
       </span>
     </button>
   );

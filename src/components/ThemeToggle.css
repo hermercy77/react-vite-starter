@@ -2,18 +2,16 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
+  padding: 0;
   border: 1px solid var(--color-border);
-  border-radius: 8px;
+  border-radius: 0.5rem;
   background-color: var(--color-toggle-bg);
   color: var(--color-toggle-text);
-  font-size: 1.25rem;
-  line-height: 1;
   cursor: pointer;
-  transition: var(--transition-theme);
-  -webkit-tap-highlight-color: transparent;
-  user-select: none;
+  transition: var(--transition-theme), transform 0.15s ease;
+  flex-shrink: 0;
 }
 
 .theme-toggle:hover {
@@ -30,6 +28,7 @@
 }
 
 .theme-toggle__icon {
-  display: inline-block;
-  transition: transform 0.2s ease-in-out, opacity 0.2s ease-in-out;
+  font-size: 1.25rem;
+  line-height: 1;
+  pointer-events: none;
 }
