@@ -2,32 +2,37 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg, #ffffff);
-  color: var(--color-text-primary, #111827);
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.app-main {
+.app__main {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 48px 24px;
+}
+
+.app__content {
   text-align: center;
+  max-width: 600px;
 }
 
-.app-main h2 {
-  margin: 0 0 16px;
-  font-size: 1.75rem;
+.app__heading {
+  font-size: 2.5rem;
   font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+  letter-spacing: -0.02em;
 }
 
-.app-main p {
-  margin: 0;
+.app__text {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.7;
+}
+
+.app__text--secondary {
   font-size: 1rem;
-  color: var(--color-text-secondary, #6b7280);
-  max-width: 480px;
-  line-height: 1.6;
-  transition: color 0.2s ease;
+  color: var(--color-text-tertiary);
 }

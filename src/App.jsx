@@ -1,6 +1,5 @@
-import React from 'react';
-import Header from './components/Header.jsx';
-import { useTheme } from './hooks/useTheme.js';
+import { useTheme } from './hooks/useTheme';
+import { Header } from './components/Header';
 import './App.css';
 
 function App() {
@@ -9,9 +8,18 @@ function App() {
   return (
     <div className="app">
       <Header theme={theme} onToggleTheme={toggleTheme} />
-      <main className="app-main">
-        <h2>Welcome to React Vite Starter</h2>
-        <p>Click the theme toggle button in the header to switch between light and dark mode.</p>
+      <main className="app__main">
+        <div className="app__content">
+          <h2 className="app__heading">Welcome</h2>
+          <p className="app__text">
+            This is a React + Vite starter with dark mode support.
+          </p>
+          <p className="app__text app__text--secondary">
+            Click the{' '}
+            <span aria-hidden="true">{theme === 'dark' ? '☀️' : '🌙'}</span>{' '}
+            button in the header to toggle between light and dark themes.
+          </p>
+        </div>
       </main>
     </div>
   );

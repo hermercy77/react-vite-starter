@@ -1,20 +1,32 @@
-import React from 'react';
+import { useCallback } from 'react';
 import './ThemeToggle.css';
 
-export default function ThemeToggle({ theme, onToggle }) {
+export function ThemeToggle({ theme, onToggle }) {
   const isDark = theme === 'dark';
-  const label = isDark ? '切换至浅色模式' : '切换至深色模式';
+  const icon = isDark ? '☀️' : '🌙';
+  const ariaLabel = isDark ? '切换到浅色模式' : '切换到深色模式';
+
+  const handleKeyDown = useCallback(
+    (e) => {
+      if (e.key === 'Enter' || e.key === ' ') {
+        e.preventDefault();
+        onToggle();
+      }
+    },
+    [onToggle]
+  );
 
   return (
     <button
       className="theme-toggle"
-      onClick={onToggle}
-      aria-label={label}
-      title={label}
       type="button"
+      onClick={onToggle}
+      onKeyDown={handleKeyDown}
+      aria-label={ariaLabel}
+      title={ariaLabel}
     >
-      <span className="theme-toggle-icon" aria-hidden="true">
-        {isDark ? '☀️' : '🌙'}
+      <span className="theme-toggle__icon" aria-hidden="true">
+        {icon}
       </span>
     </button>
   );

@@ -1,96 +1,180 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const STORAGE_KEY = 'theme-preference';
+const VALID_THEMES = ['light', 'dark'];
+const DEBOUNCE_MS = 300;
 
-function getSystemTheme() {
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-function getStoredTheme() {
+/**
+ * Safely read from localStorage.
+ * Returns null if storage is unavailable or value is invalid.
+ */
+function readStoredTheme() {
   try {
-    const stored = localStorage.getItem(STORAGE_KEY);
-    if (stored === 'light' || stored === 'dark') {
-      return stored;
+    const value = localStorage.getItem(STORAGE_KEY);
+    if (value && VALID_THEMES.includes(value)) {
+      return value;
     }
   } catch {
-    // localStorage disabled or unavailable — silently ignore
+    // localStorage disabled or unavailable
   }
   return null;
 }
 
+/**
+ * Safely write to localStorage.
+ */
+function writeStoredTheme(theme) {
+  try {
+    localStorage.setItem(STORAGE_KEY, theme);
+  } catch {
+    // localStorage disabled — silent degradation
+  }
+}
+
+/**
+ * Get system color scheme preference.
+ */
+function getSystemTheme() {
+  try {
+    if (
+      window.matchMedia &&
+      window.matchMedia('(prefers-color-scheme: dark)').matches
+    ) {
+      return 'dark';
+    }
+  } catch {
+    // matchMedia not supported
+  }
+  return 'light';
+}
+
+/**
+ * Apply theme class to <html> element.
+ */
 function applyTheme(theme) {
   const root = document.documentElement;
   root.classList.remove('light', 'dark');
   root.classList.add(theme);
 }
 
-function persistTheme(theme) {
-  try {
-    localStorage.setItem(STORAGE_KEY, theme);
-  } catch {
-    // localStorage disabled — silently ignore
+/**
+ * Determine initial theme with priority:
+ * 1. localStorage
+ * 2. System preference
+ * 3. Default: light
+ */
+function getInitialTheme() {
+  const stored = readStoredTheme();
+  if (stored) {
+    return { theme: stored, source: 'user' };
   }
+  const system = getSystemTheme();
+  return { theme: system, source: 'system' };
 }
 
 export function useTheme() {
-  const [theme, setTheme] = useState(() => {
-    const stored = getStoredTheme();
-    return stored || getSystemTheme();
+  const [themeState, setThemeState] = useState(() => {
+    const initial = getInitialTheme();
+    return initial;
   });
 
-  const [hasManualOverride, setHasManualOverride] = useState(() => {
-    return getStoredTheme() !== null;
-  });
+  const debounceTimerRef = useRef(null);
+  const lastToggleTimeRef = useRef(0);
 
   // Apply theme to DOM whenever it changes
   useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+    applyTheme(themeState.theme);
+  }, [themeState.theme]);
 
-  // Listen for system theme changes
+  // Listen for system theme changes (only follow if source is 'system')
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    let mediaQuery;
+    try {
+      mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    } catch {
+      return;
+    }
 
-    const handleSystemChange = (e) => {
-      // Only follow system if user hasn't manually set a preference
-      if (!hasManualOverride) {
-        const newTheme = e.matches ? 'dark' : 'light';
-        setTheme(newTheme);
-      }
-    };
-
-    mediaQuery.addEventListener('change', handleSystemChange);
-    return () => mediaQuery.removeEventListener('change', handleSystemChange);
-  }, [hasManualOverride]);
-
-  // Listen for storage events (multi-tab sync)
-  useEffect(() => {
-    const handleStorage = (e) => {
-      if (e.key === STORAGE_KEY) {
-        if (e.newValue === 'light' || e.newValue === 'dark') {
-          setTheme(e.newValue);
-          setHasManualOverride(true);
-        } else if (e.newValue === null) {
-          // Storage was cleared
-          setHasManualOverride(false);
-          setTheme(getSystemTheme());
+    const handler = (e) => {
+      setThemeState((prev) => {
+        // Only follow system if user hasn't manually set preference
+        if (prev.source === 'user') {
+          return prev;
         }
-      }
+        const newTheme = e.matches ? 'dark' : 'light';
+        return { theme: newTheme, source: 'system' };
+      });
     };
 
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener('change', handler);
+    } else if (mediaQuery.addListener) {
+      mediaQuery.addListener(handler);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener('change', handler);
+      } else if (mediaQuery.removeListener) {
+        mediaQuery.removeListener(handler);
+      }
+    };
   }, []);
 
+  // Sync across tabs via storage event
+  useEffect(() => {
+    const handler = (e) => {
+      if (e.key !== STORAGE_KEY) return;
+      const newValue = e.newValue;
+      if (newValue && VALID_THEMES.includes(newValue)) {
+        setThemeState({ theme: newValue, source: 'user' });
+      }
+    };
+
+    window.addEventListener('storage', handler);
+    return () => window.removeEventListener('storage', handler);
+  }, []);
+
+  // Toggle with debounce to prevent rapid flickering
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark';
-      persistTheme(next);
-      setHasManualOverride(true);
-      return next;
+    const now = Date.now();
+    if (now - lastToggleTimeRef.current < DEBOUNCE_MS) {
+      // Clear any pending debounced toggle
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+      // Schedule the toggle after debounce period
+      debounceTimerRef.current = setTimeout(() => {
+        lastToggleTimeRef.current = Date.now();
+        setThemeState((prev) => {
+          const newTheme = prev.theme === 'light' ? 'dark' : 'light';
+          writeStoredTheme(newTheme);
+          return { theme: newTheme, source: 'user' };
+        });
+      }, DEBOUNCE_MS);
+      return;
+    }
+
+    lastToggleTimeRef.current = now;
+    setThemeState((prev) => {
+      const newTheme = prev.theme === 'light' ? 'dark' : 'light';
+      writeStoredTheme(newTheme);
+      return { theme: newTheme, source: 'user' };
     });
   }, []);
 
-  return { theme, toggleTheme };
+  // Cleanup debounce timer on unmount
+  useEffect(() => {
+    return () => {
+      if (debounceTimerRef.current) {
+        clearTimeout(debounceTimerRef.current);
+      }
+    };
+  }, []);
+
+  return {
+    theme: themeState.theme,
+    source: themeState.source,
+    toggleTheme,
+  };
 }

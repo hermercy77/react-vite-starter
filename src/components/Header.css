@@ -1,31 +1,32 @@
-.app-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 24px;
-  background: var(--color-bg-header, #ffffff);
-  border-bottom: 1px solid var(--color-border, #d1d5db);
+.header {
   position: sticky;
   top: 0;
   z-index: 100;
-  transition: background-color 0.2s ease, border-color 0.2s ease;
+  background-color: var(--color-header-bg);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid var(--color-header-border);
+  transition: background-color 0.25s ease, border-color 0.25s ease;
 }
 
-.header-left {
+.header__inner {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 12px 24px;
 }
 
-.header-title {
-  margin: 0;
+.header__title {
   font-size: 1.25rem;
   font-weight: 600;
-  color: var(--color-text-primary, #111827);
-  transition: color 0.2s ease;
+  color: var(--color-text-primary);
+  letter-spacing: -0.01em;
 }
 
-.header-right {
+.header__actions {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
 }
