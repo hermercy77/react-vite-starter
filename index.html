@@ -1,27 +1,26 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="light">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>React Vite Starter</title>
     <script>
-      // Inline FOUC-prevention script: synchronously apply theme before first paint
+      // FOUC Prevention: synchronously set theme class before first render
       (function () {
-        var STORAGE_KEY = 'theme-preference';
-        var theme = 'light';
         try {
-          var stored = localStorage.getItem(STORAGE_KEY);
-          if (stored === 'light' || stored === 'dark') {
-            theme = stored;
-          } else if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            theme = 'dark';
-          }
+          var stored = localStorage.getItem('theme-preference');
         } catch (e) {
-          // localStorage unavailable — fall back to system or default
-          if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            theme = 'dark';
-          }
+          var stored = null;
         }
+        var prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        var theme;
+        if (stored === 'dark' || stored === 'light') {
+          theme = stored;
+        } else {
+          // stored is 'system', null, or invalid -> follow system
+          theme = prefersDark ? 'dark' : 'light';
+        }
+        document.documentElement.classList.remove('light', 'dark');
         document.documentElement.classList.add(theme);
       })();
     </script>

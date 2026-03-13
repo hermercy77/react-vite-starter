@@ -1,33 +1,118 @@
+/* ============================================
+   App Layout & Demo Content Styles
+   ============================================ */
+
 .app {
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg, #ffffff);
-  color: var(--color-text-primary, #111827);
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.app-main {
+.app__main {
   flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 24px;
+  max-width: 960px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 40px 20px 60px;
+}
+
+/* Hero Section */
+.app__hero {
   text-align: center;
+  margin-bottom: 48px;
 }
 
-.app-main h2 {
-  margin: 0 0 16px;
-  font-size: 1.75rem;
+.app__hero-title {
+  font-size: 2.5rem;
+  font-weight: 800;
+  color: var(--color-text-primary);
+  margin-bottom: 16px;
+  transition: color 0.25s ease;
+}
+
+.app__hero-description {
+  font-size: 1.1rem;
+  color: var(--color-text-secondary);
+  max-width: 600px;
+  margin: 0 auto 24px;
+  line-height: 1.7;
+  transition: color 0.25s ease;
+}
+
+.app__hero-description code {
+  background-color: var(--color-bg-tertiary);
+  padding: 2px 6px;
+  border-radius: 4px;
+  font-size: 0.95em;
+  transition: background-color 0.25s ease;
+}
+
+/* Theme Info Badges */
+.app__theme-info {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.app__theme-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  padding: 6px 12px;
+  border-radius: 20px;
+  transition: background-color 0.25s ease, color 0.25s ease,
+    border-color 0.25s ease;
+}
+
+.app__theme-badge code {
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* Demo Cards */
+.app__demo-cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 20px;
+}
+
+.app__card {
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: background-color 0.25s ease, border-color 0.25s ease,
+    box-shadow 0.25s ease;
+}
+
+.app__card:hover {
+  box-shadow: 0 4px 12px var(--color-shadow);
+}
+
+.app__card h3 {
+  font-size: 1.1rem;
   font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 8px;
+  transition: color 0.25s ease;
 }
 
-.app-main p {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--color-text-secondary, #6b7280);
-  max-width: 480px;
+.app__card p {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
   line-height: 1.6;
-  transition: color 0.2s ease;
+  transition: color 0.25s ease;
+}
+
+.app__card code {
+  background-color: var(--color-bg-tertiary);
+  padding: 1px 5px;
+  border-radius: 3px;
+  font-size: 0.9em;
+  transition: background-color 0.25s ease;
 }

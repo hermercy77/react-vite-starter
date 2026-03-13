@@ -1,56 +1,78 @@
-/* ===== Light Theme (default) ===== */
+/* ============================================
+   Design Tokens — Light & Dark Themes
+   All theme-dependent styling MUST use these
+   CSS custom properties.
+   ============================================ */
+
+/* Light theme (default) */
 :root,
 html.light {
-  --color-bg: #ffffff;
-  --color-bg-header: #ffffff;
-  --color-bg-toggle: #f3f4f6;
-  --color-bg-toggle-hover: #e5e7eb;
-  --color-text-primary: #111827;
-  --color-text-secondary: #6b7280;
-  --color-border: #d1d5db;
-  --color-focus-ring: #3b82f6;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f5;
+  --color-bg-tertiary: #e8e8e8;
+  --color-text-primary: #1a1a1a;
+  --color-text-secondary: #4a4a4a;
+  --color-text-muted: #717171;
+  --color-border: #d4d4d4;
+  --color-accent: #2563eb;
+  --color-accent-hover: #1d4ed8;
+  --color-accent-text: #ffffff;
+  --color-shadow: rgba(0, 0, 0, 0.1);
+  --color-toggle-bg: #e2e8f0;
+  --color-toggle-bg-hover: #cbd5e1;
+  --color-header-bg: rgba(255, 255, 255, 0.85);
 }
 
-/* ===== Dark Theme ===== */
+/* Dark theme */
 html.dark {
-  --color-bg: #111827;
-  --color-bg-header: #1f2937;
-  --color-bg-toggle: #374151;
-  --color-bg-toggle-hover: #4b5563;
-  --color-text-primary: #f9fafb;
-  --color-text-secondary: #9ca3af;
-  --color-border: #374151;
-  --color-focus-ring: #60a5fa;
+  --color-bg-primary: #121212;
+  --color-bg-secondary: #1e1e1e;
+  --color-bg-tertiary: #2a2a2a;
+  --color-text-primary: #e5e5e5;
+  --color-text-secondary: #a3a3a3;
+  --color-text-muted: #737373;
+  --color-border: #404040;
+  --color-accent: #60a5fa;
+  --color-accent-hover: #93bbfd;
+  --color-accent-text: #121212;
+  --color-shadow: rgba(0, 0, 0, 0.4);
+  --color-toggle-bg: #374151;
+  --color-toggle-bg-hover: #4b5563;
+  --color-header-bg: rgba(18, 18, 18, 0.85);
 }
 
-/* ===== Global Reset & Base ===== */
+/* ============================================
+   Global Reset & Base Styles
+   ============================================ */
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  line-height: 1.5;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  line-height: 1.6;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
-  background-color: var(--color-bg);
+  background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: background-color 0.25s ease, color 0.25s ease;
+  min-height: 100vh;
 }
 
 a {
-  color: var(--color-focus-ring);
+  color: var(--color-accent);
   text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--color-accent-hover);
 }
