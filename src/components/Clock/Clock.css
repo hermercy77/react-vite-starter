@@ -1,0 +1,99 @@
+/* ============================================
+   Clock Widget Styles
+   Supports Light / Dark mode via prefers-color-scheme
+   ============================================ */
+
+.clock-widget {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 32px;
+  border-radius: 16px;
+  background: var(--clock-bg, #ffffff);
+  color: var(--clock-text, #1a1a2e);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--clock-border, #e8e8ed);
+  width: fit-content;
+  min-width: 220px;
+  transition: background 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+}
+
+.clock-widget__time {
+  font-size: 48px;
+  font-weight: 700;
+  line-height: 1.2;
+  letter-spacing: 2px;
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum';
+}
+
+.clock-widget__date {
+  font-size: 16px;
+  font-weight: 400;
+  margin-top: 8px;
+  color: var(--clock-text-secondary, #6b7280);
+  line-height: 1.4;
+}
+
+.clock-widget__timezone {
+  font-size: 12px;
+  font-weight: 400;
+  margin-top: 4px;
+  color: var(--clock-text-tertiary, #9ca3af);
+  line-height: 1.4;
+}
+
+/* Screen reader only utility */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* ============================================
+   Dark Mode
+   ============================================ */
+@media (prefers-color-scheme: dark) {
+  .clock-widget {
+    --clock-bg: #1e1e2e;
+    --clock-text: #e4e4e7;
+    --clock-text-secondary: #a1a1aa;
+    --clock-text-tertiary: #71717a;
+    --clock-border: #2e2e3e;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* ============================================
+   Responsive: Mobile (viewport < 768px)
+   ============================================ */
+@media (max-width: 767px) {
+  .clock-widget {
+    padding: 16px 20px;
+    min-width: 180px;
+    border-radius: 12px;
+  }
+
+  .clock-widget__time {
+    font-size: 32px;
+    letter-spacing: 1px;
+  }
+
+  .clock-widget__date {
+    font-size: 14px;
+    margin-top: 6px;
+  }
+
+  .clock-widget__timezone {
+    font-size: 11px;
+  }
+}
