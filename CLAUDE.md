@@ -2,63 +2,44 @@
 
 ## Project Overview
 
-This is a React front-end project with a complete dark mode theming system.
+React 项目，实现了完整的深色模式（Dark Mode）切换功能。
 
 ## Tech Stack
 
-- React (with JSX)
-- CSS Custom Properties (Design Tokens) for theming
-- Vite (entry: `src/main.jsx`)
+- React (JSX)
+- CSS Custom Properties (Design Tokens)
+- Vite (入口文件为 `src/main.jsx`)
 
 ## Project Structure
 
 ```
-index.html              # HTML entry, includes inline script to prevent FOUC
+index.html                      # HTML 入口，含防 FOUC 内联脚本
 src/
-  main.jsx              # App entry point, imports index.css
-  App.jsx               # Root component, integrates Header and useTheme
-  App.css
-  index.css             # Global CSS custom properties (design tokens) for light/dark themes
+  main.jsx                      # 应用入口，导入全局样式
+  App.jsx / App.css             # 根组件，集成 Header 和 useTheme
+  index.css                     # 全局样式 & CSS Custom Properties（light/dark 两套色值，WCAG AA）
   hooks/
-    useTheme.js          # Theme management hook
+    useTheme.js                 # 主题管理 Hook（localStorage、系统偏好、跨标签页同步、防抖）
   components/
-    Header.jsx + .css    # Sticky header with title and theme toggle
-    ThemeToggle.jsx + .css  # 🌙/☀️ icon button for theme switching
+    Header.jsx / Header.css     # 粘性顶部导航栏，右侧放置主题切换按钮
+    ThemeToggle.jsx / ThemeToggle.css  # 主题切换按钮（无障碍：aria-label、键盘操作、focus-visible）
 ```
 
-## Theming System
+## Key Patterns
 
-### How It Works
+### 主题管理 (`useTheme.js`)
 
-- Theme is controlled by toggling `light` / `dark` class on the `<html>` element.
-- CSS custom properties defined in `src/index.css` (`:root`/`html.light` for light, `html.dark` for dark) drive all colors globally.
-- Color contrast meets WCAG AA standard (≥ 4.5:1).
+- **初始化优先级**：localStorage → 系统偏好（`prefers-color-scheme`）→ 默认 light
+- **localStorage** 读写带 try/catch 静默降级
+- **系统偏好跟随**：仅在用户未手动设置时实时响应系统主题变化
+- **跨标签页同步**：通过 `storage` 事件监听
+- **防抖**：300ms，防止快速连续点击导致闪烁
 
-### Theme Initialization Priority
+### 防 FOUC（Flash of Unstyled Content）
 
-1. `localStorage` key: `theme-preference`
-2. System `prefers-color-scheme`
-3. Default: `light`
+`index.html` 的 `<head>` 中包含同步内联脚本，在 React 渲染前读取 localStorage / 系统偏好并设置 `<html>` class。
 
-### FOUC Prevention
+### 无障碍（Accessibility）
 
-`index.html` contains a synchronous inline `<script>` in `<head>` that reads localStorage / system preference and sets the `<html>` class **before first render**.
-
-### `useTheme` Hook (`src/hooks/useTheme.js`)
-
-- Manages theme state with the priority above.
-- Persists to `localStorage` (with graceful degradation if storage is disabled).
-- Follows system theme changes in real time when user has not manually set a preference.
-- Syncs across multiple tabs via `storage` event listener.
-
-### ThemeToggle Component
-
-- Displays 🌙 (dark) / ☀️ (light) icon.
-- `aria-label` updates with current state for accessibility.
-- Supports keyboard activation (Enter / Space).
-
-### Key Conventions
-
-- localStorage key: `theme-preference`
-- Theme switch response time: < 100ms
-- All theme-dependent styling must use CSS custom properties from `src/index.css`.
+- 所有颜色满足 WCAG AA 对比度要求（≥ 4.5:1）
+- ThemeToggle 支持动态 `aria-label`、键盘操作（Enter / Space）、`focus-visible` 样式
