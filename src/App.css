@@ -2,43 +2,42 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-}
-
-.app__content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 48px 24px;
-  text-align: center;
-}
-
-.app__heading {
-  font-size: 2rem;
-  font-weight: 700;
+  background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  margin-bottom: 12px;
-}
-
-.app__description {
-  font-size: 1.125rem;
-  color: var(--color-text-secondary);
-  max-width: 480px;
-  line-height: 1.6;
-}
-
-.app__theme-info {
-  margin-top: 24px;
-  padding: 16px 24px;
-  background-color: var(--color-bg-secondary);
-  border: 1px solid var(--color-border);
-  border-radius: 12px;
   transition: var(--transition-theme);
 }
 
+.app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.app__header h1 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.app__main {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.app__theme-info {
+  padding: 0.5rem 2rem;
+  text-align: center;
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+
 .app__theme-info code {
-  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
-  font-size: 0.875rem;
-  color: var(--color-accent);
+  background: var(--color-bg-secondary);
+  padding: 0.1em 0.3em;
+  border-radius: 3px;
+  font-size: 0.7rem;
 }

@@ -1,5 +1,5 @@
 import { useTheme } from './hooks/useTheme';
-import { Header } from './components/Header';
+import ThemeToggle from './components/ThemeToggle';
 import './App.css';
 
 function App() {
@@ -7,20 +7,21 @@ function App() {
 
   return (
     <div className="app">
-      <Header resolved={resolved} onToggleTheme={toggleTheme} />
-      <main className="app__content">
-        <h2 className="app__heading">Hello, World!</h2>
-        <p className="app__description">
-          A React + Vite starter with a complete dark mode theming system.
-          Click the toggle button in the header to switch themes.
-        </p>
+      <header className="app__header">
+        <h1>React Vite Starter</h1>
+        <ThemeToggle resolved={resolved} onToggle={toggleTheme} />
+      </header>
+      <main className="app__main">
+        <p>Welcome to the React Vite Starter template.</p>
+      </main>
+      {import.meta.env.DEV && (
         <div className="app__theme-info">
           <p>
             Preference: <code>{preference}</code> · Resolved:{' '}
             <code>{resolved}</code> · Source: <code>{source}</code>
           </p>
         </div>
-      </main>
+      )}
     </div>
   );
 }
