@@ -1,64 +1,25 @@
 # CLAUDE.md
 
-## Project Overview
-
-This is a React front-end project with a complete dark mode theming system.
-
-## Tech Stack
-
-- React (with JSX)
-- CSS Custom Properties (Design Tokens) for theming
-- Vite (entry: `src/main.jsx`)
-
 ## Project Structure
 
-```
-index.html              # HTML entry, includes inline script to prevent FOUC
-src/
-  main.jsx              # App entry point, imports index.css
-  App.jsx               # Root component, integrates Header and useTheme
-  App.css
-  index.css             # Global CSS custom properties (design tokens) for light/dark themes
-  hooks/
-    useTheme.js          # Theme management hook
-  components/
-    Header.jsx + .css    # Sticky header with title and theme toggle
-    ThemeToggle.jsx + .css  # 🌙/☀️ icon button for theme switching
-```
+- `src/App.jsx` — 主应用组件，采用 flexbox 布局（`min-height: 100vh`），确保 footer 在内容不足时沉底
+- `src/App.css` — App 组件样式
+- `src/index.css` — 全局样式及 design tokens（含 `--color-text-secondary`、`--color-border`，支持 light/dark 双主题）
+- `src/components/Footer.jsx` — Footer 组件，语义化 `<footer>` 标签（`role="contentinfo"`），动态显示当前年份版权声明
+- `src/components/Footer.css` — Footer 样式，使用 CSS 自定义属性，满足 WCAG AA 对比度，含移动端媒体查询适配
 
-## Theming System
+## Design Tokens
 
-### How It Works
+全局 CSS 自定义属性定义在 `src/index.css`，支持 light/dark 双主题：
 
-- Theme is controlled by toggling `light` / `dark` class on the `<html>` element.
-- CSS custom properties defined in `src/index.css` (`:root`/`html.light` for light, `html.dark` for dark) drive all colors globally.
-- Color contrast meets WCAG AA standard (≥ 4.5:1).
+- `--color-text-secondary`
+- `--color-border`
 
-### Theme Initialization Priority
+组件样式应使用这些 token，不硬编码颜色值。
 
-1. `localStorage` key: `theme-preference`
-2. System `prefers-color-scheme`
-3. Default: `light`
+## Conventions
 
-### FOUC Prevention
-
-`index.html` contains a synchronous inline `<script>` in `<head>` that reads localStorage / system preference and sets the `<html>` class **before first render**.
-
-### `useTheme` Hook (`src/hooks/useTheme.js`)
-
-- Manages theme state with the priority above.
-- Persists to `localStorage` (with graceful degradation if storage is disabled).
-- Follows system theme changes in real time when user has not manually set a preference.
-- Syncs across multiple tabs via `storage` event listener.
-
-### ThemeToggle Component
-
-- Displays 🌙 (dark) / ☀️ (light) icon.
-- `aria-label` updates with current state for accessibility.
-- Supports keyboard activation (Enter / Space).
-
-### Key Conventions
-
-- localStorage key: `theme-preference`
-- Theme switch response time: < 100ms
-- All theme-dependent styling must use CSS custom properties from `src/index.css`.
+- 年份等动态值通过 JS 运行时获取（如 `new Date().getFullYear()`），不硬编码
+- 语义化 HTML 标签 + ARIA role 确保无障碍访问
+- 样式需满足 WCAG AA 对比度要求
+- 移动端通过媒体查询适配
