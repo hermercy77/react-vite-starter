@@ -2,63 +2,50 @@
 
 ## Project Overview
 
-This is a React front-end project with a complete dark mode theming system.
+This is a React front-end project implementing a complete dark mode toggle feature with theme management.
 
 ## Tech Stack
 
-- React (with JSX)
-- CSS Custom Properties (Design Tokens) for theming
-- Vite (entry: `src/main.jsx`)
+- React (JSX)
+- CSS Custom Properties (Design Tokens)
+- Vanilla CSS (no CSS-in-JS)
 
 ## Project Structure
 
 ```
-index.html              # HTML entry, includes inline script to prevent FOUC
+index.html                      # Entry HTML with inline FOUC-prevention script
 src/
-  main.jsx              # App entry point, imports index.css
-  App.jsx               # Root component, integrates Header and useTheme
+  main.jsx                      # React entry point
+  index.css                     # Global styles & CSS custom properties (light/dark tokens)
+  App.jsx                       # Root component, integrates Header and useTheme
   App.css
-  index.css             # Global CSS custom properties (design tokens) for light/dark themes
   hooks/
-    useTheme.js          # Theme management hook
+    useTheme.js                 # Core theme management hook (light/dark/system tri-state)
   components/
-    Header.jsx + .css    # Sticky header with title and theme toggle
-    ThemeToggle.jsx + .css  # 🌙/☀️ icon button for theme switching
+    Header.jsx + Header.css     # Sticky top bar with glassmorphism effect
+    ThemeToggle.jsx + ThemeToggle.css  # Theme toggle button (☀️/🌙/💻)
 ```
 
-## Theming System
+## Architecture & Key Concepts
 
-### How It Works
+### Theme System (Tri-State: light / dark / system)
 
-- Theme is controlled by toggling `light` / `dark` class on the `<html>` element.
-- CSS custom properties defined in `src/index.css` (`:root`/`html.light` for light, `html.dark` for dark) drive all colors globally.
-- Color contrast meets WCAG AA standard (≥ 4.5:1).
+- **FOUC Prevention**: `index.html` contains a synchronous inline script that reads `localStorage` and system preference to set `<html>` class (`light` or `dark`) before first paint.
+- **CSS Tokens**: All colors are driven by CSS custom properties under `html.light` and `html.dark` selectors. Contrast ratios meet WCAG AA (≥ 4.5:1).
+- **`useTheme` Hook** (`src/hooks/useTheme.js`):
+  - Initialization priority: `localStorage` → system preference → default `light`
+  - Persists to `localStorage` with graceful degradation
+  - Listens to `prefers-color-scheme` media query changes (active only in `system` mode)
+  - Cross-tab sync via `storage` event
+  - 300ms debounce to prevent rapid toggle clicks
 
-### Theme Initialization Priority
+### Components
 
-1. `localStorage` key: `theme-preference`
-2. System `prefers-color-scheme`
-3. Default: `light`
+- **ThemeToggle**: Displays ☀️ (light) / 🌙 (dark) / 💻 (system) icons. Shows "auto" badge in system mode. Full `aria-label`, keyboard support (Enter/Space), and `focus-visible` styling.
+- **Header**: Sticky top bar with backdrop-filter glassmorphism effect; hosts ThemeToggle on the right.
 
-### FOUC Prevention
+## Development Notes
 
-`index.html` contains a synchronous inline `<script>` in `<head>` that reads localStorage / system preference and sets the `<html>` class **before first render**.
-
-### `useTheme` Hook (`src/hooks/useTheme.js`)
-
-- Manages theme state with the priority above.
-- Persists to `localStorage` (with graceful degradation if storage is disabled).
-- Follows system theme changes in real time when user has not manually set a preference.
-- Syncs across multiple tabs via `storage` event listener.
-
-### ThemeToggle Component
-
-- Displays 🌙 (dark) / ☀️ (light) icon.
-- `aria-label` updates with current state for accessibility.
-- Supports keyboard activation (Enter / Space).
-
-### Key Conventions
-
-- localStorage key: `theme-preference`
-- Theme switch response time: < 100ms
-- All theme-dependent styling must use CSS custom properties from `src/index.css`.
+- Theme preference key in localStorage: check `useTheme.js` for the exact key name.
+- To add new theme-aware colors, define custom properties under both `html.light` and `html.dark` in `src/index.css`.
+- The inline script in `index.html` must stay synchronous (`<script>`, not `<script defer>`) to prevent theme flash.
