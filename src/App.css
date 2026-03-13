@@ -1,57 +1,37 @@
 .app {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: center;
+  padding: 40px 16px;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
 }
 
 .app-header {
-  text-align: center;
-  padding: 2rem;
+  margin-bottom: 32px;
 }
 
 .app-header h1 {
-  font-size: 2.5rem;
-  margin-bottom: 1rem;
-  background: linear-gradient(135deg, #646cff, #42d392);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
+  font-size: 24px;
+  font-weight: 600;
+  color: #1a1a2e;
 }
 
-.app-header p {
-  color: #888;
-  margin-bottom: 1.5rem;
-  font-size: 1.1rem;
+.app-main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  width: 100%;
+  max-width: 1200px;
 }
 
-.card {
-  margin: 1.5rem 0;
-}
+@media (prefers-color-scheme: dark) {
+  .app {
+    background: #121218;
+  }
 
-.card button {
-  padding: 0.75rem 2rem;
-  font-size: 1rem;
-  border: none;
-  border-radius: 8px;
-  background: #646cff;
-  color: white;
-  cursor: pointer;
-  transition: background 0.2s ease;
-}
-
-.card button:hover {
-  background: #535bf2;
-}
-
-.tips {
-  font-size: 0.9rem;
-  color: #555;
-}
-
-.tips code {
-  background: #1a1a1a;
-  padding: 0.2em 0.4em;
-  border-radius: 4px;
-  color: #42d392;
-  font-family: monospace;
+  .app-header h1 {
+    color: #e4e4e7;
+  }
 }

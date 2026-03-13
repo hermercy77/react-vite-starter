@@ -1,15 +1,17 @@
-import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from './pages/Home';
+import { Clock } from './components/Clock';
+import './App.css';
 
-const App: React.FC = () => {
+function App() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Home />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="app">
+      <header className="app-header">
+        <h1>React Vite Starter</h1>
+      </header>
+      <main className="app-main">
+        <Clock hourCycle="h24" showSeconds={true} showDate={true} />
+      </main>
+    </div>
   );
-};
+}
 
 export default App;
