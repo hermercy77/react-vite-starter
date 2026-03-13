@@ -1,0 +1,147 @@
+/* ============================================================
+   Apple-style Hello World Landing Page
+   ============================================================ */
+
+/* ---------- Layout ---------- */
+.main {
+  min-height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 24px;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display",
+    "Helvetica Neue", sans-serif;
+}
+
+.hero {
+  max-width: 980px;
+  width: 100%;
+  text-align: center;
+  padding: 20vh 0;
+  box-sizing: border-box;
+}
+
+/* ---------- Animation base ---------- */
+.animateItem {
+  opacity: 0;
+  transform: translateY(20px);
+  will-change: transform, opacity;
+  transition:
+    opacity 0.8s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Respect reduced-motion preference */
+@media (prefers-reduced-motion: reduce) {
+  .animateItem {
+    transform: none !important;
+    transition: opacity 0.8s ease !important;
+  }
+
+  .visible {
+    transform: none !important;
+  }
+}
+
+/* ---------- Title ---------- */
+.title {
+  margin: 0;
+  font-size: 80px;
+  font-weight: 700;
+  color: #1d1d1f;
+  letter-spacing: -0.003em;
+  line-height: 1.05;
+}
+
+/* ---------- Subtitle ---------- */
+.subtitle {
+  margin: 16px 0 0;
+  font-size: 21px;
+  font-weight: 400;
+  color: #6e6e73;
+  line-height: 1.5;
+}
+
+/* ---------- CTA Button ---------- */
+.cta {
+  display: inline-block;
+  margin-top: 32px;
+  padding: 12px 24px;
+  background-color: #0071e3;
+  color: #ffffff;
+  font-size: 17px;
+  font-weight: 400;
+  font-family: inherit;
+  text-decoration: none;
+  border-radius: 980px;
+  border: none;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    transform 0.2s ease;
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
+}
+
+.cta:hover {
+  background-color: #0077ed;
+  transform: translateY(-1px);
+}
+
+.cta:active {
+  background-color: #006edb;
+  transform: translateY(0px);
+  transition:
+    background-color 0.1s ease,
+    transform 0.1s ease;
+}
+
+.cta:focus-visible {
+  outline: 3px solid #0071e3;
+  outline-offset: 3px;
+}
+
+/* ---------- Responsive: Tablet ---------- */
+@media (max-width: 1023px) and (min-width: 768px) {
+  .hero {
+    padding: 20vh 16px;
+  }
+
+  .title {
+    font-size: 64px;
+  }
+
+  .subtitle {
+    font-size: 21px;
+  }
+}
+
+/* ---------- Responsive: Mobile ---------- */
+@media (max-width: 767px) {
+  .hero {
+    text-align: center;
+    padding: 20vh 0;
+  }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .subtitle {
+    font-size: 17px;
+  }
+
+  .cta {
+    display: block;
+    width: 100%;
+    text-align: center;
+    box-sizing: border-box;
+  }
+}
