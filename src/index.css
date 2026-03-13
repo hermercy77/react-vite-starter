@@ -1,56 +1,89 @@
-/* ===== Light Theme (default) ===== */
+/* ===== Design Tokens ===== */
+
+/* Light theme (default) */
 :root,
 html.light {
-  --color-bg: #ffffff;
-  --color-bg-header: #ffffff;
-  --color-bg-toggle: #f3f4f6;
-  --color-bg-toggle-hover: #e5e7eb;
-  --color-text-primary: #111827;
-  --color-text-secondary: #6b7280;
-  --color-border: #d1d5db;
-  --color-focus-ring: #3b82f6;
+  --color-bg-primary: #ffffff;
+  --color-bg-secondary: #f5f5f7;
+  --color-bg-tertiary: #e8e8ed;
+  --color-text-primary: #1d1d1f;
+  --color-text-secondary: #6e6e73;
+  --color-text-tertiary: #86868b;
+  --color-border: #d2d2d7;
+  --color-accent: #0071e3;
+  --color-accent-hover: #0077ed;
+  --color-toggle-bg: #e8e8ed;
+  --color-toggle-bg-hover: #d2d2d7;
+  --color-toggle-text: #1d1d1f;
+  --color-header-bg: rgba(255, 255, 255, 0.72);
+  --color-header-border: #d2d2d7;
+  --color-focus-ring: rgba(0, 113, 227, 0.6);
+  --transition-theme: background-color 0.2s ease-in-out, color 0.2s ease-in-out,
+    border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
 }
 
-/* ===== Dark Theme ===== */
+/* Dark theme */
 html.dark {
-  --color-bg: #111827;
-  --color-bg-header: #1f2937;
-  --color-bg-toggle: #374151;
-  --color-bg-toggle-hover: #4b5563;
-  --color-text-primary: #f9fafb;
-  --color-text-secondary: #9ca3af;
-  --color-border: #374151;
-  --color-focus-ring: #60a5fa;
+  --color-bg-primary: #1d1d1f;
+  --color-bg-secondary: #2c2c2e;
+  --color-bg-tertiary: #3a3a3c;
+  --color-text-primary: #f5f5f7;
+  --color-text-secondary: #a1a1a6;
+  --color-text-tertiary: #86868b;
+  --color-border: #424245;
+  --color-accent: #2997ff;
+  --color-accent-hover: #64b5f6;
+  --color-toggle-bg: #3a3a3c;
+  --color-toggle-bg-hover: #48484a;
+  --color-toggle-text: #f5f5f7;
+  --color-header-bg: rgba(29, 29, 31, 0.72);
+  --color-header-border: #424245;
+  --color-focus-ring: rgba(41, 151, 255, 0.6);
 }
 
 /* ===== Global Reset & Base ===== */
+
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 html {
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  font-size: 16px;
+  -webkit-text-size-adjust: 100%;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
-  background-color: var(--color-bg);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
+  background-color: var(--color-bg-primary);
   color: var(--color-text-primary);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  transition: var(--transition-theme);
+  line-height: 1.6;
+  min-height: 100vh;
 }
 
 a {
-  color: var(--color-focus-ring);
+  color: var(--color-accent);
   text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--color-accent-hover);
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+/* Accessibility: visible focus ring */
+:focus-visible {
+  outline: 2px solid var(--color-focus-ring);
+  outline-offset: 2px;
 }

@@ -2,12 +2,9 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg, #ffffff);
-  color: var(--color-text-primary, #111827);
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.app-main {
+.app__content {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -17,17 +14,31 @@
   text-align: center;
 }
 
-.app-main h2 {
-  margin: 0 0 16px;
-  font-size: 1.75rem;
+.app__heading {
+  font-size: 2rem;
   font-weight: 700;
+  color: var(--color-text-primary);
+  margin-bottom: 12px;
 }
 
-.app-main p {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--color-text-secondary, #6b7280);
+.app__description {
+  font-size: 1.125rem;
+  color: var(--color-text-secondary);
   max-width: 480px;
   line-height: 1.6;
-  transition: color 0.2s ease;
+}
+
+.app__theme-info {
+  margin-top: 24px;
+  padding: 16px 24px;
+  background-color: var(--color-bg-secondary);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+  transition: var(--transition-theme);
+}
+
+.app__theme-info code {
+  font-family: 'SF Mono', 'Fira Code', 'Fira Mono', Menlo, Consolas, monospace;
+  font-size: 0.875rem;
+  color: var(--color-accent);
 }

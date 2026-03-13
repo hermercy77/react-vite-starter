@@ -1,15 +1,12 @@
-import React from 'react';
-import ThemeToggle from './ThemeToggle.jsx';
+import { ThemeToggle } from './ThemeToggle';
 import './Header.css';
 
-export default function Header({ theme, onToggleTheme }) {
+export function Header({ resolved, onToggleTheme }) {
   return (
-    <header className="app-header">
-      <div className="header-left">
-        <h1 className="header-title">React Vite Starter</h1>
-      </div>
-      <div className="header-right">
-        <ThemeToggle theme={theme} onToggle={onToggleTheme} />
+    <header className="header">
+      <h1 className="header__title">React Vite Starter</h1>
+      <div className="header__actions">
+        <ThemeToggle resolved={resolved} onToggle={onToggleTheme} />
       </div>
     </header>
   );
