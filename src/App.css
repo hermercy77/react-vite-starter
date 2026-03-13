@@ -1,33 +1,14 @@
 .app {
-  min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg, #ffffff);
-  color: var(--color-text-primary, #111827);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  min-height: 100vh;
 }
 
-.app-main {
+.main {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
-  text-align: center;
-}
-
-.app-main h2 {
-  margin: 0 0 16px;
-  font-size: 1.75rem;
-  font-weight: 700;
-}
-
-.app-main p {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--color-text-secondary, #6b7280);
-  max-width: 480px;
-  line-height: 1.6;
-  transition: color 0.2s ease;
+  padding: 2rem;
 }
