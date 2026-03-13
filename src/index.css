@@ -1,56 +1,61 @@
-/* ===== Light Theme (default) ===== */
-:root,
-html.light {
+:root {
+  --transition-theme: background-color 0.2s ease, color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+[data-theme='light'] {
   --color-bg: #ffffff;
-  --color-bg-header: #ffffff;
-  --color-bg-toggle: #f3f4f6;
-  --color-bg-toggle-hover: #e5e7eb;
-  --color-text-primary: #111827;
+  --color-text: #111827;
   --color-text-secondary: #6b7280;
-  --color-border: #d1d5db;
+  --color-border: #e5e7eb;
+  --color-primary: #3b82f6;
+  --color-primary-hover: #2563eb;
+  --color-header-bg: rgba(255, 255, 255, 0.8);
+  --color-header-border: rgba(0, 0, 0, 0.08);
+  --color-toggle-bg: #f3f4f6;
+  --color-toggle-bg-hover: #e5e7eb;
+  --color-toggle-text: #111827;
   --color-focus-ring: #3b82f6;
 }
 
-/* ===== Dark Theme ===== */
-html.dark {
-  --color-bg: #111827;
-  --color-bg-header: #1f2937;
-  --color-bg-toggle: #374151;
-  --color-bg-toggle-hover: #4b5563;
-  --color-text-primary: #f9fafb;
-  --color-text-secondary: #9ca3af;
-  --color-border: #374151;
+[data-theme='dark'] {
+  --color-bg: #0f172a;
+  --color-text: #f1f5f9;
+  --color-text-secondary: #94a3b8;
+  --color-border: #334155;
+  --color-primary: #60a5fa;
+  --color-primary-hover: #3b82f6;
+  --color-header-bg: rgba(15, 23, 42, 0.8);
+  --color-header-border: rgba(255, 255, 255, 0.08);
+  --color-toggle-bg: #374151;
+  --color-toggle-bg-hover: #4b5563;
+  --color-toggle-text: #f9fafb;
   --color-focus-ring: #60a5fa;
 }
 
-/* ===== Global Reset & Base ===== */
 *,
 *::before,
 *::after {
   box-sizing: border-box;
-}
-
-html {
-  line-height: 1.5;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
-  padding: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial,
-    sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    'Helvetica Neue', Arial, sans-serif;
   background-color: var(--color-bg);
-  color: var(--color-text-primary);
-  transition: background-color 0.2s ease, color 0.2s ease;
+  color: var(--color-text);
+  transition: var(--transition-theme);
+  line-height: 1.6;
+  min-height: 100vh;
 }
 
 a {
-  color: var(--color-focus-ring);
+  color: var(--color-primary);
   text-decoration: none;
 }
 
 a:hover {
-  text-decoration: underline;
+  color: var(--color-primary-hover);
 }

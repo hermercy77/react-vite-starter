@@ -1,96 +1,133 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 
 const STORAGE_KEY = 'theme-preference';
 
-function getSystemTheme() {
-  if (typeof window === 'undefined') return 'light';
-  return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-}
-
-function getStoredTheme() {
+/**
+ * Read the stored preference from localStorage.
+ * Missing key (or invalid value) → 'system'.
+ */
+function readStoredPreference() {
   try {
     const stored = localStorage.getItem(STORAGE_KEY);
     if (stored === 'light' || stored === 'dark') {
       return stored;
     }
   } catch {
-    // localStorage disabled or unavailable — silently ignore
+    // localStorage may be unavailable
   }
-  return null;
+  return 'system';
 }
 
-function applyTheme(theme) {
-  const root = document.documentElement;
-  root.classList.remove('light', 'dark');
-  root.classList.add(theme);
-}
-
-function persistTheme(theme) {
+/**
+ * Persist the preference.
+ * 'system' is represented by *removing* the key so that the FOUC script
+ * (which treats a missing key as "follow OS") stays in sync.
+ */
+function writeStoredPreference(pref) {
   try {
-    localStorage.setItem(STORAGE_KEY, theme);
+    if (pref === 'system') {
+      localStorage.removeItem(STORAGE_KEY);
+    } else {
+      localStorage.setItem(STORAGE_KEY, pref);
+    }
   } catch {
-    // localStorage disabled — silently ignore
+    // ignore
   }
 }
 
+/**
+ * Resolve the current OS color-scheme.
+ */
+function getSystemTheme() {
+  if (typeof window === 'undefined') return 'light';
+  return window.matchMedia('(prefers-color-scheme: dark)').matches
+    ? 'dark'
+    : 'light';
+}
+
+/**
+ * Apply the resolved theme to the DOM so CSS `[data-theme]` selectors work.
+ */
+function applyThemeToDOM(theme) {
+  const root = document.documentElement;
+  root.setAttribute('data-theme', theme);
+}
+
+/**
+ * Custom hook that manages light / dark / system theme preference.
+ *
+ * Returns { theme, resolvedTheme, toggleTheme }
+ *  - theme: 'light' | 'dark' | 'system'
+ *  - resolvedTheme: 'light' | 'dark'
+ *  - toggleTheme: () => void  (cycles between light ↔ dark)
+ */
 export function useTheme() {
-  const [theme, setTheme] = useState(() => {
-    const stored = getStoredTheme();
-    return stored || getSystemTheme();
-  });
+  const [preferenceState, setPreferenceState] = useState(readStoredPreference);
+  const [systemTheme, setSystemTheme] = useState(getSystemTheme);
 
-  const [hasManualOverride, setHasManualOverride] = useState(() => {
-    return getStoredTheme() !== null;
-  });
-
-  // Apply theme to DOM whenever it changes
+  // Keep a ref to systemTheme so toggleTheme never goes stale.
+  const systemThemeRef = useRef(systemTheme);
   useEffect(() => {
-    applyTheme(theme);
-  }, [theme]);
+    systemThemeRef.current = systemTheme;
+  }, [systemTheme]);
 
-  // Listen for system theme changes
+  // Keep a ref to the latest preference for the debounced write.
+  const latestPreferenceRef = useRef(preferenceState);
   useEffect(() => {
-    const mediaQuery = window.matchMedia('(prefers-color-scheme: dark)');
+    latestPreferenceRef.current = preferenceState;
+  }, [preferenceState]);
 
-    const handleSystemChange = (e) => {
-      // Only follow system if user hasn't manually set a preference
-      if (!hasManualOverride) {
-        const newTheme = e.matches ? 'dark' : 'light';
-        setTheme(newTheme);
-      }
+  const debounceRef = useRef(null);
+
+  // Resolve the effective theme.
+  const resolvedTheme =
+    preferenceState === 'system' ? systemTheme : preferenceState;
+
+  // Apply to DOM whenever resolved theme changes.
+  useEffect(() => {
+    applyThemeToDOM(resolvedTheme);
+  }, [resolvedTheme]);
+
+  // Listen for OS theme changes.
+  useEffect(() => {
+    const mql = window.matchMedia('(prefers-color-scheme: dark)');
+    const handler = (e) => {
+      setSystemTheme(e.matches ? 'dark' : 'light');
     };
-
-    mediaQuery.addEventListener('change', handleSystemChange);
-    return () => mediaQuery.removeEventListener('change', handleSystemChange);
-  }, [hasManualOverride]);
-
-  // Listen for storage events (multi-tab sync)
-  useEffect(() => {
-    const handleStorage = (e) => {
-      if (e.key === STORAGE_KEY) {
-        if (e.newValue === 'light' || e.newValue === 'dark') {
-          setTheme(e.newValue);
-          setHasManualOverride(true);
-        } else if (e.newValue === null) {
-          // Storage was cleared
-          setHasManualOverride(false);
-          setTheme(getSystemTheme());
-        }
-      }
-    };
-
-    window.addEventListener('storage', handleStorage);
-    return () => window.removeEventListener('storage', handleStorage);
+    mql.addEventListener('change', handler);
+    return () => mql.removeEventListener('change', handler);
   }, []);
 
+  // Cleanup debounce timer on unmount.
+  useEffect(() => {
+    return () => {
+      if (debounceRef.current) {
+        clearTimeout(debounceRef.current);
+      }
+    };
+  }, []);
+
+  /**
+   * Toggle between light and dark.
+   * UI updates immediately (setState); localStorage write is debounced.
+   */
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === 'dark' ? 'light' : 'dark';
-      persistTheme(next);
-      setHasManualOverride(true);
-      return next;
+    setPreferenceState((prev) => {
+      const currentResolved =
+        prev === 'system' ? systemThemeRef.current : prev;
+      return currentResolved === 'dark' ? 'light' : 'dark';
     });
-  }, []);
 
-  return { theme, toggleTheme };
+    if (debounceRef.current) clearTimeout(debounceRef.current);
+    debounceRef.current = setTimeout(() => {
+      writeStoredPreference(latestPreferenceRef.current);
+      debounceRef.current = null;
+    }, 80);
+  }, []); // stable reference — no deps needed
+
+  return {
+    theme: preferenceState,
+    resolvedTheme,
+    toggleTheme,
+  };
 }

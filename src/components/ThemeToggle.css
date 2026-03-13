@@ -2,33 +2,33 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 40px;
-  height: 40px;
+  width: 2.5rem;
+  height: 2.5rem;
   padding: 0;
-  border: 1px solid var(--color-border, #d1d5db);
-  border-radius: 8px;
-  background: var(--color-bg-toggle, #f3f4f6);
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+  background-color: var(--color-toggle-bg);
+  color: var(--color-toggle-text);
   cursor: pointer;
-  transition: background-color 0.15s ease, border-color 0.15s ease, transform 0.15s ease;
+  transition: var(--transition-theme), transform 0.15s ease;
   flex-shrink: 0;
 }
 
 .theme-toggle:hover {
-  background: var(--color-bg-toggle-hover, #e5e7eb);
-  transform: scale(1.05);
+  background-color: var(--color-toggle-bg-hover);
 }
 
 .theme-toggle:focus-visible {
-  outline: 2px solid var(--color-focus-ring, #3b82f6);
+  outline: 2px solid var(--color-focus-ring);
   outline-offset: 2px;
 }
 
 .theme-toggle:active {
-  transform: scale(0.95);
+  transform: scale(0.92);
 }
 
-.theme-toggle-icon {
-  font-size: 20px;
+.theme-toggle__icon {
+  font-size: 1.25rem;
   line-height: 1;
-  user-select: none;
+  pointer-events: none;
 }

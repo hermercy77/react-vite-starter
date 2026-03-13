@@ -2,32 +2,34 @@
   min-height: 100vh;
   display: flex;
   flex-direction: column;
-  background: var(--color-bg, #ffffff);
-  color: var(--color-text-primary, #111827);
-  transition: background-color 0.2s ease, color 0.2s ease;
 }
 
-.app-main {
+.app__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1.5rem;
+  background-color: var(--color-header-bg);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--color-header-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  transition: var(--transition-theme);
+}
+
+.app__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--color-text);
+  margin: 0;
+}
+
+.app__main {
   flex: 1;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 48px 24px;
-  text-align: center;
-}
-
-.app-main h2 {
-  margin: 0 0 16px;
-  font-size: 1.75rem;
-  font-weight: 700;
-}
-
-.app-main p {
-  margin: 0;
-  font-size: 1rem;
-  color: var(--color-text-secondary, #6b7280);
-  max-width: 480px;
-  line-height: 1.6;
-  transition: color 0.2s ease;
+  padding: 2rem;
 }
