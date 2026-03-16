@@ -150,7 +150,7 @@ const TestPage: React.FC = () => {
 
   return (
     <main className={styles.page}>
-      <h1 className={styles.title}>🍌 大香蕉测试页</h1>
+      <h1 className={styles.title}>🍌 大香蕉</h1>
       <div
         ref={wrapRef}
         className={`${styles.bananaWrap} ${dragging ? styles.dragging : ''}`}
