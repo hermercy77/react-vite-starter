@@ -29,7 +29,30 @@
 .app__main {
   flex: 1;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
   padding: 2rem;
+  gap: 1.5rem;
+}
+
+.app__test-btn {
+  padding: 0.625rem 1.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--color-button-text, #fff);
+  background-color: var(--color-accent, #646cff);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: var(--transition-theme), transform 0.15s ease;
+}
+
+.app__test-btn:hover {
+  opacity: 0.85;
+  transform: translateY(-1px);
+}
+
+.app__test-btn:active {
+  transform: translateY(0);
 }
