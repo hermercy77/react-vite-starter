@@ -13,6 +13,12 @@ function App() {
       </header>
       <main className="app__main">
         <p>Welcome! Click the theme toggle to switch between light and dark mode.</p>
+        <button
+          className="app__test-btn"
+          onClick={() => alert('测试成功！🎉')}
+        >
+          点击测试
+        </button>
       </main>
     </div>
   );
