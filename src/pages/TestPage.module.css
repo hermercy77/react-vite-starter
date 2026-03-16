@@ -1,0 +1,60 @@
+/* ============================================================
+   /test 页面 — 大香蕉展示
+   ============================================================ */
+
+.page {
+  min-height: calc(100vh - 56px); /* account for sticky header */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1.5rem;
+  box-sizing: border-box;
+  background: linear-gradient(160deg, #fffde7 0%, #fff8e1 60%, #ffecb3 100%);
+  font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+}
+
+.title {
+  margin: 0 0 2.5rem;
+  font-size: 2.4rem;
+  font-weight: 700;
+  color: #5d3a00;
+  letter-spacing: -0.01em;
+  text-align: center;
+}
+
+.bananaWrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  filter: drop-shadow(0 12px 28px rgba(200, 150, 12, 0.35));
+  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.bananaWrap:hover {
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.banana {
+  /* ensures minimum 300px on both axes */
+  min-width: 300px;
+  min-height: 300px;
+}
+
+/* ---------- Responsive: Mobile (375px) ---------- */
+@media (max-width: 480px) {
+  .title {
+    font-size: 1.7rem;
+  }
+
+  .banana {
+    width: min(300px, 88vw);
+    height: min(300px, 88vw);
+    min-width: unset;
+    min-height: unset;
+  }
+
+  .bananaWrap {
+    filter: drop-shadow(0 8px 16px rgba(200, 150, 12, 0.3));
+  }
+}
