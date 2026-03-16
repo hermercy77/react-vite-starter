@@ -1,9 +1,29 @@
+import { useState, useEffect } from 'react';
 import { useTheme } from './hooks/useTheme';
 import { ThemeToggle } from './components/ThemeToggle';
+import Home from './pages/Home';
+import TestPage from './pages/TestPage';
+import { getCurrentRoute } from './utils/navigate';
 import './App.css';
 
 function App() {
   const { resolvedTheme, toggleTheme } = useTheme();
+  const [route, setRoute] = useState(getCurrentRoute);
+
+  useEffect(() => {
+    const handleRouteChange = () => setRoute(getCurrentRoute());
+    window.addEventListener('popstate', handleRouteChange);
+    return () => window.removeEventListener('popstate', handleRouteChange);
+  }, []);
+
+  const renderPage = () => {
+    switch (route) {
+      case '/test':
+        return <TestPage />;
+      default:
+        return <Home />;
+    }
+  };
 
   return (
     <div className="app">
@@ -11,15 +31,7 @@ function App() {
         <h1 className="app__title">React Vite Starter</h1>
         <ThemeToggle resolvedTheme={resolvedTheme} onToggle={toggleTheme} />
       </header>
-      <main className="app__main">
-        <p>Welcome! Click the theme toggle to switch between light and dark mode.</p>
-        <button
-          className="app__test-btn"
-          onClick={() => alert('测试成功！🎉')}
-        >
-          点击测试
-        </button>
-      </main>
+      {renderPage()}
     </div>
   );
 }

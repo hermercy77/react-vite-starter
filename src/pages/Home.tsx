@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './Home.module.css';
+import { navigate } from '../utils/navigate';
 
 const Home: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -39,7 +40,7 @@ const Home: React.FC = () => {
   };
 
   const handleTestClick = () => {
-    alert('测试按钮被点击了！');
+    navigate('/test');
   };
 
   return (
@@ -71,9 +72,9 @@ const Home: React.FC = () => {
           ref={testBtnRef}
           className={`${styles.testBtn} ${styles.animateItem}`}
           onClick={handleTestClick}
-          aria-label="测试"
+          aria-label="前往大香蕉测试页"
         >
-          测试
+          🍌 大香蕉测试页
         </button>
       </div>
     </main>
