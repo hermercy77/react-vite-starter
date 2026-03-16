@@ -108,6 +108,48 @@
   outline-offset: 3px;
 }
 
+/* ---------- Test Button ---------- */
+.testBtn {
+  display: inline-block;
+  margin-top: 32px;
+  margin-left: 12px;
+  padding: 12px 24px;
+  background-color: transparent;
+  color: #0071e3;
+  font-size: 17px;
+  font-weight: 400;
+  font-family: inherit;
+  border-radius: 980px;
+  border: 1.5px solid #0071e3;
+  cursor: pointer;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease,
+    transform 0.2s ease;
+  will-change: transform, opacity;
+  -webkit-font-smoothing: antialiased;
+}
+
+.testBtn:hover {
+  background-color: #0071e3;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+.testBtn:active {
+  background-color: #006edb;
+  color: #ffffff;
+  transform: translateY(0px);
+  transition:
+    background-color 0.1s ease,
+    transform 0.1s ease;
+}
+
+.testBtn:focus-visible {
+  outline: 3px solid #0071e3;
+  outline-offset: 3px;
+}
+
 
 /* ---------- Responsive: Tablet ---------- */
 @media (max-width: 1023px) and (min-width: 768px) {
