@@ -35,11 +35,14 @@
   align-items: center;
   justify-content: center;
   filter: drop-shadow(0 12px 28px rgba(200, 150, 12, 0.35));
-  transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+  cursor: grab;
+  user-select: none;
+  touch-action: none; /* prevent browser gestures while dragging */
+  transform-style: preserve-3d;
 }
 
-.bananaWrap:hover {
-  transform: rotate(-6deg) scale(1.06);
+.bananaWrap.dragging {
+  cursor: grabbing;
 }
 
 .banana {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useRef, useState, useCallback, useEffect } from 'react';
 import styles from './TestPage.module.css';
 
 const BananaSVG: React.FC = () => (
@@ -98,11 +98,71 @@ const BananaSVG: React.FC = () => (
   </svg>
 );
 
+/** Sensitivity: degrees per pixel of mouse movement */
+const SENSITIVITY = 0.5;
+/** X-axis rotation clamp range */
+const X_CLAMP = 45;
+
 const TestPage: React.FC = () => {
+  const wrapRef = useRef<HTMLDivElement>(null);
+  const [rotateX, setRotateX] = useState(0);
+  const [rotateY, setRotateY] = useState(0);
+  const [dragging, setDragging] = useState(false);
+
+  // Use refs to track last pointer position without re-renders
+  const lastPos = useRef({ x: 0, y: 0 });
+
+  const handlePointerDown = useCallback((e: React.PointerEvent) => {
+    e.preventDefault();
+    setDragging(true);
+    lastPos.current = { x: e.clientX, y: e.clientY };
+    // Capture pointer so we get events even if cursor leaves the element
+    (e.target as HTMLElement).setPointerCapture?.(e.pointerId);
+  }, []);
+
+  const handlePointerMove = useCallback(
+    (e: React.PointerEvent) => {
+      if (!dragging) return;
+      const dx = e.clientX - lastPos.current.x;
+      const dy = e.clientY - lastPos.current.y;
+      lastPos.current = { x: e.clientX, y: e.clientY };
+
+      setRotateY((prev) => prev + dx * SENSITIVITY);
+      setRotateX((prev) => {
+        const next = prev - dy * SENSITIVITY; // invert Y for natural feel
+        return Math.max(-X_CLAMP, Math.min(X_CLAMP, next));
+      });
+    },
+    [dragging],
+  );
+
+  const handlePointerUp = useCallback(() => {
+    setDragging(false);
+  }, []);
+
+  // Prevent page scrolling while dragging on touch devices
+  useEffect(() => {
+    if (!dragging) return;
+    const preventScroll = (e: TouchEvent) => e.preventDefault();
+    document.addEventListener('touchmove', preventScroll, { passive: false });
+    return () => document.removeEventListener('touchmove', preventScroll);
+  }, [dragging]);
+
   return (
     <main className={styles.page}>
       <h1 className={styles.title}>🍌 大香蕉测试页</h1>
-      <div className={styles.bananaWrap}>
+      <div
+        ref={wrapRef}
+        className={`${styles.bananaWrap} ${dragging ? styles.dragging : ''}`}
+        style={{
+          transform: `perspective(800px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`,
+          transition: dragging ? 'none' : 'transform 0.05s ease-out',
+        }}
+        onPointerDown={handlePointerDown}
+        onPointerMove={handlePointerMove}
+        onPointerUp={handlePointerUp}
+        onPointerCancel={handlePointerUp}
+      >
         <BananaSVG />
       </div>
     </main>
