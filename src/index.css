@@ -16,6 +16,11 @@
   --color-toggle-bg-hover: #e5e7eb;
   --color-toggle-text: #111827;
   --color-focus-ring: #3b82f6;
+  /* 大香蕉页专属变量 */
+  --color-banana-bg-start: #fffde7;
+  --color-banana-bg-mid: #fff8e1;
+  --color-banana-bg-end: #ffecb3;
+  --color-banana-title: #5d3a00;
 }
 
 [data-theme='dark'] {
@@ -31,6 +36,11 @@
   --color-toggle-bg-hover: #4b5563;
   --color-toggle-text: #f9fafb;
   --color-focus-ring: #60a5fa;
+  /* 大香蕉页专属变量 */
+  --color-banana-bg-start: #1a1400;
+  --color-banana-bg-mid: #201900;
+  --color-banana-bg-end: #151100;
+  --color-banana-title: #ffd54f;
 }
 
 *,

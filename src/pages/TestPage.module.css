@@ -10,7 +10,13 @@
   justify-content: center;
   padding: 2rem 1.5rem;
   box-sizing: border-box;
-  background: linear-gradient(160deg, #fffde7 0%, #fff8e1 60%, #ffecb3 100%);
+  background: linear-gradient(
+    160deg,
+    var(--color-banana-bg-start) 0%,
+    var(--color-banana-bg-mid) 60%,
+    var(--color-banana-bg-end) 100%
+  );
+  transition: background 0.2s ease, color 0.2s ease;
   font-family: -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
 }
 
@@ -18,9 +24,10 @@
   margin: 0 0 2.5rem;
   font-size: 2.4rem;
   font-weight: 700;
-  color: #5d3a00;
+  color: var(--color-banana-title);
   letter-spacing: -0.01em;
   text-align: center;
+  transition: color 0.2s ease;
 }
 
 .bananaWrap {
