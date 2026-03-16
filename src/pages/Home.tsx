@@ -72,9 +72,9 @@ const Home: React.FC = () => {
           ref={testBtnRef}
           className={`${styles.testBtn} ${styles.animateItem}`}
           onClick={handleTestClick}
-          aria-label="前往大香蕉测试页"
+          aria-label="前往大香蕉"
         >
-          🍌 大香蕉测试页
+          🍌 大香蕉
         </button>
       </div>
     </main>
