@@ -36,3 +36,5 @@ react-vite-starter/
     ├── App.css         # 组件样式
     └── index.css       # 全局样式
 ```
+
+hello world
