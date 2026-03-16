@@ -5,16 +5,12 @@ const Home: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
   const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLAnchorElement>(null);
-  const testBtnRef = useRef<HTMLButtonElement>(null);
-  const testBtn2Ref = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     const elements = [
       titleRef.current,
       subtitleRef.current,
       ctaRef.current,
-      testBtnRef.current,
-      testBtn2Ref.current,
     ];
 
     // Trigger animations after mount
@@ -22,7 +18,7 @@ const Home: React.FC = () => {
 
     elements.forEach((el, index) => {
       if (!el) return;
-      const delays = [0, 150, 300, 450, 600];
+      const delays = [0, 150, 300];
       const timer = setTimeout(() => {
         el.classList.add(styles.visible);
       }, delays[index]);
@@ -38,14 +34,6 @@ const Home: React.FC = () => {
     e.preventDefault();
     // Navigate to target route — update href as needed
     window.location.href = '/explore';
-  };
-
-  const handleTestClick = () => {
-    alert('测试按钮被点击了！');
-  };
-
-  const handleTest2Click = () => {
-    alert('测试2按钮被点击了！');
   };
 
   return (
@@ -73,22 +61,6 @@ const Home: React.FC = () => {
         >
           开始探索
         </a>
-        <button
-          ref={testBtnRef}
-          className={`${styles.testBtn} ${styles.animateItem}`}
-          onClick={handleTestClick}
-          aria-label="测试"
-        >
-          测试
-        </button>
-        <button
-          ref={testBtn2Ref}
-          className={`${styles.testBtn} ${styles.animateItem}`}
-          onClick={handleTest2Click}
-          aria-label="测试2"
-        >
-          测试2
-        </button>
       </div>
     </main>
   );
