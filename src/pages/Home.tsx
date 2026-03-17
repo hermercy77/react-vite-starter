@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import styles from './Home.module.css';
 import { navigate } from '../utils/navigate';
+import { CommentList } from '../components/Comment';
 
 const Home: React.FC = () => {
   const titleRef = useRef<HTMLHeadingElement>(null);
@@ -77,6 +78,7 @@ const Home: React.FC = () => {
           🍌 大香蕉测试页
         </button>
       </div>
+      <CommentList />
     </main>
   );
 };
